@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/animated-desktop/static/css/main.dd55c527.chunk.css",
+    "main.js": "/animated-desktop/static/js/main.5c57f8b6.chunk.js",
+    "main.js.map": "/animated-desktop/static/js/main.5c57f8b6.chunk.js.map",
+    "runtime-main.js": "/animated-desktop/static/js/runtime-main.cd23924f.js",
+    "runtime-main.js.map": "/animated-desktop/static/js/runtime-main.cd23924f.js.map",
+    "static/js/2.a36f5996.chunk.js": "/animated-desktop/static/js/2.a36f5996.chunk.js",
+    "static/js/2.a36f5996.chunk.js.map": "/animated-desktop/static/js/2.a36f5996.chunk.js.map",
+    "static/js/3.d014cc10.chunk.js": "/animated-desktop/static/js/3.d014cc10.chunk.js",
+    "static/js/3.d014cc10.chunk.js.map": "/animated-desktop/static/js/3.d014cc10.chunk.js.map",
+    "index.html": "/animated-desktop/index.html",
+    "static/css/main.dd55c527.chunk.css.map": "/animated-desktop/static/css/main.dd55c527.chunk.css.map",
+    "static/js/2.a36f5996.chunk.js.LICENSE.txt": "/animated-desktop/static/js/2.a36f5996.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/animated-desktop/static/media/waterfall.71eabd81.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.cd23924f.js",
+    "static/js/2.a36f5996.chunk.js",
+    "static/css/main.dd55c527.chunk.css",
+    "static/js/main.5c57f8b6.chunk.js"
+  ]
+}
