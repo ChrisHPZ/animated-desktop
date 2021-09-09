@@ -15,7 +15,7 @@ class Moon extends React.Component {
 	}
 
 	async componentDidMount() {
-		const url = `http://api.weatherapi.com/v1/astronomy.json?key=${API_KEY}&q=44212&aqi=no`;
+		const url = `https://api.weatherapi.com/v1/astronomy.json?key=${API_KEY}&q=44212&aqi=no`;
 		const response = await fetch(url);
 		const data = await response.json();
 		this.setState({ astronomy: data.astronomy, loading: false});
