@@ -47,7 +47,7 @@ const Weather = () =>  {
 			</div>
 			<p className="date small">Wind Speed: {wind}</p>
 			<p className="date small">{conditionText}</p>
-			<p className="date small"><img src={conditionIcon} alt={conditionText} /></p>
+			<p className="date small"><img src={conditionIcon} alt={conditionText} width="64" height="64" /></p>
 		</div>
 	)
 }
