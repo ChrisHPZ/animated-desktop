@@ -1,40 +1,50 @@
-import React from 'react';
-import { Circles } from 'react-loading-icons';
-import { IconContext } from 'react-icons';
-import { WiMoonAltWaningGibbous3 } from 'react-icons/wi'
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
-const style = {
-	margin: "0 auto"
-}
 const API_KEY = process.env.REACT_APP_API_KEY;
-class Moon extends React.Component {
+const Moon = () => {
 	
-	state = {
-		loading: true,
-		astronomy: null
+	const [latitude, setLatitude] = useState(0);
+	const [longitude, setLongitude] = useState(0);
+	const [moonPhase, setMoonPhase] = useState('');
+	const [sunRise, setSunRise] = useState('');
+	const [sunSet, setSunSet] = useState('');
+	const [moonRise, setMoonRise] = useState('');
+	const [moonSet, setMoonSet] = useState('');
+	
+	const savePositionToState = (position) => {
+		setLatitude(position.coords.latitude);
+		setLongitude(position.coords.longitude);
 	}
 
-	async componentDidMount() {
-		const url = `https://api.weatherapi.com/v1/astronomy.json?key=${API_KEY}&q=44212&aqi=no`;
-		const response = await fetch(url);
-		const data = await response.json();
-		this.setState({ astronomy: data.astronomy, loading: false});
+	const fetchMoon = async () => {
+		try {
+			await navigator.geolocation.getCurrentPosition(savePositionToState);
+			const res = await axios.get(
+				`https://api.weatherapi.com/v1/astronomy.json?key=${API_KEY}&q=${latitude},${longitude}&aqi=no`
+			);
+			setMoonPhase(res.data.astronomy.astro.moon_phase);
+			setSunRise(res.data.astronomy.astro.sunrise);
+			setSunSet(res.data.astronomy.astro.sunset);
+			setMoonRise(res.data.astronomy.astro.moonrise);
+			setMoonSet(res.data.astronomy.astro.moonset);
+		} catch (err) {
+			console.error(err);
+		}
 	}
 
-	render() {
-		return(
-			<IconContext.Provider value={{ color: "white", size:"100px" }}>
-				{this.state.loading || !this.state.astronomy ? (
-					<div><Circles /></div>
-				) : ( 
-					<div className="moon-phase">
-						<WiMoonAltWaningGibbous3 style={style} />
-						<p className="date small">{this.state.astronomy.astro.moon_phase}</p>
-					</div>
-				)}				
-			</IconContext.Provider>
-		)
-	}	
+	useEffect(() => {
+		fetchMoon();
+	})
+	return(
+		<div className="moon-phase">
+			<p className="date small">Moon Phase: {moonPhase}</p>
+			<p className="date small">Sunrise: {sunRise}</p>
+			<p className="date small">Sunset: {sunSet}</p>
+			<p className="date small">Moon Rise: {moonRise}</p>
+			<p className="date small">Moon Set: {moonSet}</p>
+		</div>
+	)
 }
 
 export default Moon;

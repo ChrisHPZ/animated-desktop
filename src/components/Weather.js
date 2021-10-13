@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Circles } from 'react-loading-icons';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const font = {
@@ -7,44 +7,49 @@ const font = {
 	color: "#ffffff"
 }
 
-navigator.geolocation.getCurrentPosition(function(position) {
-	console.log(position);
-	return [position.coords.latitude,position.coords.longitude];
-});
+const Weather = () =>  {
 
-class Weather extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			loading: true,
-			tempurature: null
+	const [latitude, setLatitude] = useState(0);
+	const [longitude, setLongitude] = useState(0);
+	const [tempurature, setTempurature] = useState('');
+	const [wind, setWind] = useState('');
+	const [conditionText, setConditionText] = useState('');
+	const [conditionIcon, setConditionIcon] = useState('');
+
+	const savePositionToState = (position) => {
+		setLatitude(position.coords.latitude);
+		setLongitude(position.coords.longitude);
+	}
+
+	const fetchWeather = async () => {
+		try {
+			await navigator.geolocation.getCurrentPosition(savePositionToState);
+			const res = await axios.get(
+				`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${latitude},${longitude}&aqi=no`
+			);
+			setTempurature(res.data.current.temp_f);
+			setWind(res.data.current.wind_mph);
+			setConditionText(res.data.current.condition.text);
+			setConditionIcon(res.data.current.condition.icon);
+		} catch (err) {
+			console.error(err);
 		}
 	}
 
-	async componentDidMount() {
-		const url = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=44212&aqi=no`;
-		const response = await fetch(url);
-		const data = await response.json();
-		this.setState({tempurature: data.current, loading: false});
-	}
-  
-	render() {
-		return (
-			<div className="weather">
-				{this.state.loading || !this.state.tempurature ? (
-					<div style={font}><Circles /></div> 
-				) : (
-					<div>
-						<div style={font}>
-							{this.state.tempurature.temp_f}&#176;						
-						</div>
-						<p className="date small">{this.state.tempurature.condition.text}</p>
-						<img src={this.state.tempurature.condition.icon} alt="icon" />
-					</div>
-				)}
+	useEffect(() => {
+		fetchWeather();
+	})
+	
+	return(
+		<div className="weather">
+			<div style={font}>
+				{Math.round(tempurature)}&#176;
 			</div>
-		)
-	}
+			<p className="date small">Wind Speed: {wind}</p>
+			<p className="date small">{conditionText}</p>
+			<p className="date small"><img src={conditionIcon} alt={conditionText} /></p>
+		</div>
+	)
 }
-  
+
 export default Weather;
